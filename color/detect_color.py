@@ -11,10 +11,12 @@ image = cv2.imread(args["image"])
 
 # define the list of boundaries
 boundaries = [
-	([17, 15, 100], [50, 56, 200]),
-	([86, 31, 4], [220, 88, 50]),
-	([25, 146, 190], [62, 174, 250]),
-	([103, 86, 65], [145, 133, 128])
+	#([17, 15, 100], [50, 56, 200]),
+	#([86, 31, 4], [220, 88, 50]),
+	#([25, 146, 190], [62, 174, 250]),
+	#([103, 86, 65], [145, 133, 128]),
+	([0, 0, 0], [65, 54, 49])
+	#([0, 0, 0], [6, 5, 3])
 ]
 
 
@@ -31,4 +33,5 @@ for (lower, upper) in boundaries:
 	output = cv2.bitwise_and(image, image, mask = mask)
 	# show the images
 	cv2.imshow("images", np.hstack([image, output]))
+	cv2.imshow("images", mask)
 	cv2.waitKey(0)

@@ -7,6 +7,7 @@ import os
 
 import cv2
 import numpy as np
+import time
 
 
 ###################################################################################################
@@ -73,18 +74,29 @@ def main():
 		([25, 146, 190], [62, 174, 250]),
 		([103, 86, 65], [145, 133, 128])
 	]
-	lower = np.array([103, 86, 65], dtype = "uint8")
-	upper = np.array([145, 133, 128], dtype = "uint8")
 
-	#https://stackoverflow.com/questions/60212888/printing-the-percentage-of-a-color-in-an-image-in-opencv-python
+	# 42,41,41
+#
+	lower = np.array([0, 0, 0], dtype = "uint8")
+	upper = np.array([65, 54, 49], dtype = "uint8")
+
+	
 
 	################################################################
 	# HERE IS THE GOOD STUFF TO TRY TO DETECT BLACK PIXELS
 	ret, frame = capWebcam.read()
 	hsv=cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 	mask = cv2.inRange(hsv, lower, upper)
+	#indices = np.where(mask
 	output = cv2.bitwise_and(hsv, hsv, mask = mask)
-	cv2.imshow("images", np.hstack([hsv, output]))
+	#cv2.imshow("images", np.hstack([hsv, output]))
+	print("pixel ratio hopefully")
+	#print(str(round(((mask>0).mean())*100,3)))
+	#ratio = cv2.countNonZero(mask)/(hsv.size/3)
+	ratio = mask.size/hsv.size
+	print(ratio)
+	cv2.imshow("imagesssss", mask)
+	time.sleep(1)
 	#################################################################
 
 	# for (lower, upper) in boundaries:
