@@ -29,7 +29,7 @@ def main():
         os.system("pause")  # pause until user presses a key so user can see error message
         return  # and exit function (which exits program)
     # end if
-    while cv2.waitKey(1) != 27 and capWebcam.isOpened():  # until the Esc key is pressed or webcam connection is lost
+    while cv2.waitKey(1) != 27 or capWebcam.isOpened():  # until the Esc key is pressed or webcam connection is lost
         blnFrameReadSuccessfully, imgOriginal = capWebcam.read()  # read next frame
 
         if not blnFrameReadSuccessfully or imgOriginal is None:  # if frame was not read successfully
@@ -67,14 +67,47 @@ def main():
                 cv2.circle(imgOriginal, (x, y), radius, (0, 0, 255), 3)  # draw red circle around the detected object
                 # end for
         # end if
+	boundaries = [
+		([17, 15, 100], [50, 56, 200]),
+		([86, 31, 4], [220, 88, 50]),
+		([25, 146, 190], [62, 174, 250]),
+		([103, 86, 65], [145, 133, 128])
+	]
+	lower = np.array([103, 86, 65], dtype = "uint8")
+	upper = np.array([145, 133, 128], dtype = "uint8")
+
+	#https://stackoverflow.com/questions/60212888/printing-the-percentage-of-a-color-in-an-image-in-opencv-python
+
+	################################################################
+	# HERE IS THE GOOD STUFF TO TRY TO DETECT BLACK PIXELS
+	ret, frame = capWebcam.read()
+	hsv=cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+	mask = cv2.inRange(hsv, lower, upper)
+	output = cv2.bitwise_and(hsv, hsv, mask = mask)
+	cv2.imshow("images", np.hstack([hsv, output]))
+	#################################################################
+
+	# for (lower, upper) in boundaries:
+		# create NumPy arrays from the boundaries
+		#lower = np.array(lower, dtype = "uint8")
+		#upper = np.array(upper, dtype = "uint8")
+		#print("Lower: ", lower)
+		#print("Upper: ", upper)
+		# find the colors within the specified boundaries and apply
+		# the mask
+		#mask = cv2.inRange(hsv, lower, upper)
+		#output = cv2.bitwise_and(hsv, hsv, mask = mask)
+		# show the images
+		#cv2.imshow("images", np.hstack([hsv, output]))
+		#cv2.waitKey(0)
 
         cv2.namedWindow("imgOriginal", cv2.WINDOW_NORMAL)  # create windows, use WINDOW_AUTOSIZE for a fixed window size
-        cv2.namedWindow("imgThresh", cv2.WINDOW_NORMAL)  # or use WINDOW_NORMAL to allow window resizing
-        cv2.namedWindow("sharpen", cv2.WINDOW_NORMAL)  # or use WINDOW_NORMAL to allow window
+        # cv2.namedWindow("imgThresh", cv2.WINDOW_NORMAL)  # or use WINDOW_NORMAL to allow window resizing
+        # cv2.namedWindow("sharpen", cv2.WINDOW_NORMAL)  # or use WINDOW_NORMAL to allow window
 
         cv2.imshow("imgOriginal", imgOriginal)  # show windows
-        cv2.imshow("imgThresh", imgThresh)
-	cv2.imshow('sharpen',sharpen)
+        # cv2.imshow("imgThresh", imgThresh)
+	# cv2.imshow('sharpen',sharpen)
 
     # end while
 

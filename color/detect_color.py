@@ -23,8 +23,8 @@ for (lower, upper) in boundaries:
 	# create NumPy arrays from the boundaries
 	lower = np.array(lower, dtype = "uint8")
 	upper = np.array(upper, dtype = "uint8")
-	print(lower)
-	print(upper)
+	print("Lower: ", lower)
+	print("Upper: ", upper)
 	# find the colors within the specified boundaries and apply
 	# the mask
 	mask = cv2.inRange(image, lower, upper)
