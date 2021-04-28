@@ -12,12 +12,21 @@ image = cv2.imread(args["image"])
 
 # define the list of boundaries
 boundaries = [
-	#([17, 15, 100], [50, 56, 200]),
+	#([17, 15, 100], [50, 56, 200])
 	#([86, 31, 4], [220, 88, 50]),
 	#([25, 146, 190], [62, 174, 250]),
 	#([103, 86, 65], [145, 133, 128]),
+<<<<<<< HEAD
 	([0, 0, 0], [30, 30, 30])
+=======
+>>>>>>> 4572c70aab341ccbb697c61be2caa4d57cd9173e
 	#([0, 0, 0], [0, 0, 0])
+	#([65, 65, 65], [65, 65, 65])
+	#([0, 0, 0], [200, 200, 200]),
+	#([0, 0, 0], [65, 54, 49])
+	#([0, 0, 0], [0, 0, 0])
+	# ([0, 0, 0], [255, 255, 255])
+	([0, 0, 0], [40, 40, 40])
 ]
 
 
@@ -26,12 +35,19 @@ for (lower, upper) in boundaries:
 	# create NumPy arrays from the boundaries
 	lower = np.array(lower, dtype = "uint8")
 	upper = np.array(upper, dtype = "uint8")
+	num_whites = np.sum(image <= 200)
+	num_blacks = np.sum(image == 0)
+
+	print('Number of white pixels: ',num_whites)
+	print('Number of black pixels: ',num_blacks)
 	print("Lower: ", lower)
 	print("Upper: ", upper)
 
 	dst = cv2.inRange(image, lower,upper)
 	no_red = cv2.countNonZero(dst)
 	print('The number of black pixels: ',no_red)
+	# test = image.total()
+	# print("TEEEESSST: ", test)
 	# find the colors within the specified boundaries and apply
 	# the mask
 	mask = cv2.inRange(image, lower, upper)
