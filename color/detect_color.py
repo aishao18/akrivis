@@ -31,7 +31,7 @@ for (lower, upper) in boundaries:
 
 	dst = cv2.inRange(image, lower,upper)
 	no_red = cv2.countNonZero(dst)
-	print('The number of red pixels: ',no_red)
+	print('The number of black pixels: ',no_red)
 	# find the colors within the specified boundaries and apply
 	# the mask
 	mask = cv2.inRange(image, lower, upper)
