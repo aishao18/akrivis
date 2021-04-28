@@ -2,6 +2,7 @@
 import numpy as np
 import argparse
 import cv2
+#from matplotlib import pyplot as plt
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--image", help = "path to the image")
@@ -16,7 +17,7 @@ boundaries = [
 	#([25, 146, 190], [62, 174, 250]),
 	#([103, 86, 65], [145, 133, 128]),
 	([0, 0, 0], [65, 54, 49])
-	#([0, 0, 0], [6, 5, 3])
+	#([0, 0, 0], [0, 0, 0])
 ]
 
 
@@ -27,11 +28,17 @@ for (lower, upper) in boundaries:
 	upper = np.array(upper, dtype = "uint8")
 	print("Lower: ", lower)
 	print("Upper: ", upper)
+
+	dst = cv2.inRange(image, lower,upper)
+	no_red = cv2.countNonZero(dst)
+	print('The number of red pixels: ',no_red)
 	# find the colors within the specified boundaries and apply
 	# the mask
 	mask = cv2.inRange(image, lower, upper)
 	output = cv2.bitwise_and(image, image, mask = mask)
 	# show the images
 	cv2.imshow("images", np.hstack([image, output]))
+	#print('The hstack:')
+	#print(np.hstack([image, output]))
 	cv2.imshow("images", mask)
 	cv2.waitKey(0)
