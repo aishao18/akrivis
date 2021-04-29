@@ -43,8 +43,8 @@ def main():
 
         imgThreshLow = cv2.inRange(imgHSV, np.array([0, 135, 135]), np.array([18, 255, 255]))
         imgThreshHigh = cv2.inRange(imgHSV, np.array([130, 135, 135]), np.array([179, 255, 255]))
-	sharpen_kernel = np.array([[-1,-1,-1],[-1,10,-1],[-1,-1,-1]])
-	sharpen = cv2.filter2D(imgHSV,-1, sharpen_kernel)
+        sharpen_kernel = np.array([[-1,-1,-1],[-1,10,-1],[-1,-1,-1]])
+        sharpen = cv2.filter2D(imgHSV,-1, sharpen_kernel)
 
         imgThresh = cv2.add(imgThreshLow, imgThreshHigh)
 
@@ -68,82 +68,85 @@ def main():
                 cv2.circle(imgOriginal, (x, y), radius, (0, 0, 255), 3)  # draw red circle around the detected object
                 # end for
         # end if
-    boundaries = [
-        ([17, 15, 100], [50, 56, 200]),
-        ([86, 31, 4], [220, 88, 50]),
-        ([25, 146, 190], [62, 174, 250]),
-        ([103, 86, 65], [145, 133, 128])
-    ]
+        boundaries = [
+            ([17, 15, 100], [50, 56, 200]),
+            ([86, 31, 4], [220, 88, 50]),
+            ([25, 146, 190], [62, 174, 250]),
+            ([103, 86, 65], [145, 133, 128])
+        ]
 
-# 42,41,41
-#
-    lower = np.array([0, 0, 0], dtype = "uint8")
-    upper = np.array([65, 54, 49], dtype = "uint8")
+    # 42,41,41
+    #
+        lower = np.array([0, 0, 0], dtype = "uint8")
+        upper = np.array([65, 54, 49], dtype = "uint8")
 
 
 
-    ################################################################
-    # HERE IS THE GOOD STUFF TO TRY TO DETECT BLACK PIXELS
-    ret, frame = capWebcam.read()
-    hsv=cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    all_pixels = cv2.inRange(frame, np.array([0, 0, 0], dtype = "uint8"), np.array([255, 255, 255], dtype = "uint8"))
-    total_pixel_num = float(cv2.countNonZero(all_pixels))
-    mask = cv2.inRange(hsv, lower, upper)
-    print("hry", total_pixel_num)
-    #indices = np.where(mask
-    output = cv2.bitwise_and(hsv, hsv, mask = mask)
-    #cv2.imshow("images", np.hstack([hsv, output]))
-    licorice = float(cv2.countNonZero(mask))
-    print("dsfe ", licorice)
-    print("pixel ratio hopefully", float(licorice/total_pixel_num))
-    #print(str(round(((mask>0).mean())*100,3)))
-    #ratio = cv2.countNonZero(mask)/(hsv.size/3)
-    ratio = mask.size/hsv.size
-    print(ratio)
-    cv2.imshow("imagesssss", mask)
-    time.sleep(1)
-    #################################################################
+        ################################################################
+        # HERE IS THE GOOD STUFF TO TRY TO DETECT BLACK PIXELS
+        ret, frame = capWebcam.read()
+        hsv=cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-# ret, frame = capWebcam.read()
+        all_pixels = cv2.inRange(frame, np.array([0, 0, 0], dtype = "uint8"), np.array([255, 255, 255], dtype = "uint8"))
+        total_pixel_num = float(cv2.countNonZero(all_pixels))
 
-#         hsv=cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        mask = cv2.inRange(hsv, lower, upper)
 
-#         all_pixels = cv2.inRange(hsv, [0,0,0], [255,255,255])
-#         total_pixel_num = cv2.countNonZero(all_pixels)
+        # print("hry", total_pixel_num)
 
-#         mask = cv2.inRange(hsv, lower, upper)
-#         #indices = np.where(mask
-#         output = cv2.bitwise_and(hsv, hsv, mask = mask)
-#         licorice = cv2.countNonZero(mask)
-#         #cv2.imshow("images", np.hstack([hsv, output]))
-#         print("pixel ratio hopefully", licorice/total_pixel_num)
-#         #print(str(round(((mask>0).mean())*100,3)))
-#         #ratio = cv2.countNonZero(mask)/(hsv.size/3)
-#         ratio = mask.size/hsv.size
-#         print(ratio)
-#         cv2.imshow("imagesssss", mask)
-#         time.sleep(1)
-    # for (lower, upper) in boundaries:
-        # create NumPy arrays from the boundaries
-        #lower = np.array(lower, dtype = "uint8")
-        #upper = np.array(upper, dtype = "uint8")
-        #print("Lower: ", lower)
-        #print("Upper: ", upper)
-        # find the colors within the specified boundaries and apply
-        # the mask
-        #mask = cv2.inRange(hsv, lower, upper)
-        #output = cv2.bitwise_and(hsv, hsv, mask = mask)
-        # show the images
+        output = cv2.bitwise_and(hsv, hsv, mask = mask)
         #cv2.imshow("images", np.hstack([hsv, output]))
-        #cv2.waitKey(0)
+        licorice = float(cv2.countNonZero(mask))
 
-    cv2.namedWindow("imgOriginal", cv2.WINDOW_NORMAL)  # create windows, use WINDOW_AUTOSIZE for a fixed window size
-        # cv2.namedWindow("imgThresh", cv2.WINDOW_NORMAL)  # or use WINDOW_NORMAL to allow window resizing
-        # cv2.namedWindow("sharpen", cv2.WINDOW_NORMAL)  # or use WINDOW_NORMAL to allow window
+        # print("dsfe ", licorice)
+        print("Pixel ratio: ", float(licorice/total_pixel_num))
+        
+        ratio = mask.size/hsv.size
+        print(ratio)
+        cv2.imshow("imagesssss", mask)
+        # time.sleep(1)
+        #################################################################
 
-    cv2.imshow("imgOriginal", imgOriginal)  # show windows
-        # cv2.imshow("imgThresh", imgThresh)
-    # cv2.imshow('sharpen',sharpen)
+    # ret, frame = capWebcam.read()
+
+    #         hsv=cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+
+    #         all_pixels = cv2.inRange(hsv, [0,0,0], [255,255,255])
+    #         total_pixel_num = cv2.countNonZero(all_pixels)
+
+    #         mask = cv2.inRange(hsv, lower, upper)
+    #         #indices = np.where(mask
+    #         output = cv2.bitwise_and(hsv, hsv, mask = mask)
+    #         licorice = cv2.countNonZero(mask)
+    #         #cv2.imshow("images", np.hstack([hsv, output]))
+    #         print("pixel ratio hopefully", licorice/total_pixel_num)
+    #         #print(str(round(((mask>0).mean())*100,3)))
+    #         #ratio = cv2.countNonZero(mask)/(hsv.size/3)
+    #         ratio = mask.size/hsv.size
+    #         print(ratio)
+    #         cv2.imshow("imagesssss", mask)
+    #         time.sleep(1)
+        # for (lower, upper) in boundaries:
+            # create NumPy arrays from the boundaries
+            #lower = np.array(lower, dtype = "uint8")
+            #upper = np.array(upper, dtype = "uint8")
+            #print("Lower: ", lower)
+            #print("Upper: ", upper)
+            # find the colors within the specified boundaries and apply
+            # the mask
+            #mask = cv2.inRange(hsv, lower, upper)
+            #output = cv2.bitwise_and(hsv, hsv, mask = mask)
+            # show the images
+            #cv2.imshow("images", np.hstack([hsv, output]))
+            #cv2.waitKey(0)
+
+        cv2.namedWindow("imgOriginal", cv2.WINDOW_NORMAL)  # create windows, use WINDOW_AUTOSIZE for a fixed window size
+            # cv2.namedWindow("imgThresh", cv2.WINDOW_NORMAL)  # or use WINDOW_NORMAL to allow window resizing
+            # cv2.namedWindow("sharpen", cv2.WINDOW_NORMAL)  # or use WINDOW_NORMAL to allow window
+
+        cv2.imshow("imgOriginal", imgOriginal)  # show windows
+            # cv2.imshow("imgThresh", imgThresh)
+        # cv2.imshow('sharpen',sharpen)
 
     # end while
 
