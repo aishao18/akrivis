@@ -35,7 +35,7 @@ for (lower, upper) in boundaries:
 	num_whites = np.sum(image <= 200)
 	num_blacks = np.sum(image == 0)
 
-	print('Number of white pixels: ',num_whites)
+	print('Number of total pixels: ',num_whites)
 	print('Number of black pixels: ',num_blacks)
 	print("Lower: ", lower)
 	print("Upper: ", upper)
