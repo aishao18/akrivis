@@ -20,10 +20,10 @@ boundaries = [
 	#([0, 0, 0], [0, 0, 0])
 	#([65, 65, 65], [65, 65, 65])
 	#([0, 0, 0], [200, 200, 200]),
-	#([0, 0, 0], [65, 54, 49])
+	([0, 0, 0], [65, 54, 49])
 	#([0, 0, 0], [0, 0, 0])
 	# ([0, 0, 0], [255, 255, 255])
-	([0, 0, 0], [40, 40, 40])
+	#([0, 0, 0], [40, 40, 40])
 ]
 
 
@@ -43,6 +43,12 @@ for (lower, upper) in boundaries:
 	dst = cv2.inRange(image, lower,upper)
 	no_red = cv2.countNonZero(dst)
 	print('The number of black pixels: ',no_red)
+
+	all_pixels = cv2.inRange(image, np.array([0, 0, 0], dtype = "uint8"), np.array([255, 255, 255], dtype = "uint8"))
+	total_pixel_num = float(cv2.countNonZero(all_pixels))
+	
+	print('The ratio: ', no_red/total_pixel_num)
+
 	# test = image.total()
 	# print("TEEEESSST: ", test)
 	# find the colors within the specified boundaries and apply
