@@ -8,10 +8,12 @@ import argparse
 frameWidth = 640
 frameHeight = 480
 
+# For figures
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--image", help = "path to the image")
 args = vars(ap.parse_args())
 
+# For videos
 # cap = cv2.VideoCapture(0)
 
 # cap.set(3, frameWidth)
@@ -87,7 +89,7 @@ while True:
     kernel = np.ones((5, 5))
     imgDil = cv2.dilate(imgCanny, kernel, iterations=1)
     getContours(imgDil,imgContour)
-    imgStack = stackImages(0.2,([img,imgCanny],
+    imgStack = stackImages(0.3,([img,imgCanny],
                                 [imgDil,imgContour]))
     
 
@@ -100,14 +102,3 @@ while True:
  
 
  
-# scale_percent = 60 # percent of original size
-# width = int(img.shape[1] * scale_percent / 100)
-# height = int(img.shape[0] * scale_percent / 100)
-# dim = (width, height)
-  
-# # resize image
-# resized = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
- 
-# print('Resized Dimensions : ',resized.shape)
- 
-# cv2.imshow("Resized image", resized)
