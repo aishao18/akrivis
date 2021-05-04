@@ -98,41 +98,48 @@ while True:
     # create NumPy arrays from the boundaries
     lower = np.array(lower, dtype = "uint8")
     upper = np.array(upper, dtype = "uint8")
-    image = cv2.imread('figures/raw-chocolate.jpg')
-    # find the colors within the specified boundaries and apply
-    # the mask
-    mask = cv2.inRange(image, lower, upper)
-    output = cv2.bitwise_and(image, image, mask = mask)
-    maskContour = output.copy()
+    # image = cv2.imread('figures/raw-chocolate.jpg')
+    capWebcam = cv2.VideoCapture('figures/convey.mp4')
+    ret, image = capWebcam.read()
+    print("heyyyyyy ", ret)
+    if ret:
+        # find the colors within the specified boundaries and apply
+        # the mask
+        mask = cv2.inRange(image, lower, upper)
+        output = cv2.bitwise_and(image, image, mask = mask)
+        maskContour = output.copy()
 
 
-    imgBlur = cv2.GaussianBlur(image, (7, 7), 1)
-    # imgGray = cv2.cvtColor(imgBlur, cv2.COLOR_BGR2GRAY)
-    imgCanny = cv2.Canny(imgBlur,threshold1,threshold2)
-    kernel = np.ones((5, 5))
-    imgDil = cv2.dilate(imgCanny, kernel, iterations=1)
+        imgBlur = cv2.GaussianBlur(image, (7, 7), 1)
+        # imgGray = cv2.cvtColor(imgBlur, cv2.COLOR_BGR2GRAY)
+        imgCanny = cv2.Canny(imgBlur,threshold1,threshold2)
+        kernel = np.ones((5, 5))
+        imgDil = cv2.dilate(imgCanny, kernel, iterations=1)
 
 
-    # maskBlur = cv2.GaussianBlur(mask, (7, 7), 1)
-    # maskGray = cv2.cvtColor(mask, cv2.COLOR_BGR2GRAY)
-    # threshold1 = cv2.getTrackbarPos("Threshold1", "Parameters")
-    # threshold2 = cv2.getTrackbarPos("Threshold2", "Parameters")
-    maskCanny = cv2.Canny(mask,threshold1,threshold2)
-    kernel = np.ones((5, 5))
-    maskDil = cv2.dilate(maskCanny, kernel, iterations=1)
-    getContours(maskDil, maskContour)
-    # getContours(mask, maskContour) #maybe works
-    # getContours(maskContour, imgDil)
-    maskStack = stackImages(0.3,([mask,maskCanny],
-                                [maskDil,maskContour]))
-    # output = cv2.bitwise_and(image, image, mask = mask)
-    # # show the images
-    # cv2.imshow("images", np.hstack([mask, maskCanny]))
-    # cv2.waitKey(0)
-    
+        # maskBlur = cv2.GaussianBlur(mask, (7, 7), 1)
+        # maskGray = cv2.cvtColor(mask, cv2.COLOR_BGR2GRAY)
+        # threshold1 = cv2.getTrackbarPos("Threshold1", "Parameters")
+        # threshold2 = cv2.getTrackbarPos("Threshold2", "Parameters")
+        maskCanny = cv2.Canny(mask,threshold1,threshold2)
+        kernel = np.ones((5, 5))
+        maskDil = cv2.dilate(maskCanny, kernel, iterations=1)
+        getContours(maskDil, maskContour)
+        # getContours(mask, maskContour) #maybe works
+        # getContours(maskContour, imgDil)
+        maskStack = stackImages(0.3,([mask,maskCanny],
+                                    [maskDil,maskContour]))
+        # output = cv2.bitwise_and(image, image, mask = mask)
+        # # show the images
+        # cv2.imshow("images", np.hstack([mask, maskCanny]))
+        # cv2.waitKey(0)
 
-    cv2.imshow("Result", maskStack)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+
+        cv2.imshow("Result", maskStack)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+    else:
+        print("boooo")
         break
 
 
