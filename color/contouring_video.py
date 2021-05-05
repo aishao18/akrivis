@@ -61,11 +61,21 @@ def getContours(img,imgContour,img_counter):
             approx = cv2.approxPolyDP(cnt, 0.02 * peri, True)
 
             
-            print(len(approx))
-            
+            # print(len(approx))
 
-            if len(approx) >= 4:
-                print('it detects')
+            # x y bullid
+            x , y , w, h = cv2.boundingRect(approx)
+            print("x ", x)
+            print("y ", y)
+            cv2.rectangle(imgContour, (x , y ), (x + w , y + h ), (0, 255, 0), 5)
+
+            cv2.putText(imgContour, "Points: " + str(len(approx)), (x + w + 20, y + 20), cv2.FONT_HERSHEY_COMPLEX, .7,
+                        (0, 255, 0), 2)
+            cv2.putText(imgContour, "Area: " + str(int(area)), (x + w + 20, y + 45), cv2.FONT_HERSHEY_COMPLEX, 0.7,
+                        (0, 255, 0), 2)
+
+            if len(approx) >= 4 and 136 <= x and x <= 236 and 0 <= y and y <= 38:
+                # print('it detects')
                 _, image = cap.read()
 
                 # TODO: check if image taken
@@ -82,8 +92,8 @@ def getContours(img,imgContour,img_counter):
                 lower = [0, 0, 0]
                 upper = [65, 54, 49]
 
-    #               lower = np.array([0, 0, 0], dtype = "uint8")
-    # upper = np.array([65, 54, 49], dtype = "uint8")
+                # lower = np.array([0, 0, 0], dtype = "uint8")
+                # upper = np.array([65, 54, 49], dtype = "uint8")
 
 
                 # create NumPy arrays from the boundaries
@@ -93,17 +103,25 @@ def getContours(img,imgContour,img_counter):
                 # the mask
                 mask = cv2.inRange(image, lower, upper)
                 output = cv2.bitwise_and(image, image, mask = mask)
+
+                all_pixels = cv2.inRange(image, np.array([0, 0, 0], dtype = "uint8"), np.array([255, 255, 255], dtype = "uint8"))
+                total_pixel_num = float(cv2.countNonZero(all_pixels))
+                licorice = float(cv2.countNonZero(mask))
+
+                print("Pixel ratio: ", float(licorice/total_pixel_num))
+
+
+                ##### aisha
+
+
+                no_red = cv2.countNonZero(mask)
+
+                the_ratio = "The black pixel ratio: " + str(round((no_red/total_pixel_num)*100,2)) + "%"
+                print(the_ratio)
+
                 # show the images
                 cv2.imshow("images", np.hstack([image, output]))
                 # cv2.waitKey(0)
-
-            x , y , w, h = cv2.boundingRect(approx)
-            cv2.rectangle(imgContour, (x , y ), (x + w , y + h ), (0, 255, 0), 5)
-
-            cv2.putText(imgContour, "Points: " + str(len(approx)), (x + w + 20, y + 20), cv2.FONT_HERSHEY_COMPLEX, .7,
-                        (0, 255, 0), 2)
-            cv2.putText(imgContour, "Area: " + str(int(area)), (x + w + 20, y + 45), cv2.FONT_HERSHEY_COMPLEX, 0.7,
-                        (0, 255, 0), 2)
 
 img_counter = 0
 while True:
