@@ -4,8 +4,8 @@ import time
 
 frameWidth = 640
 frameHeight = 480
-# cap = cv2.VideoCapture(0)
-cap = cv2.VideoCapture('figures/convey.mp4')
+cap = cv2.VideoCapture(0)
+# cap = cv2.VideoCapture('figures/convey.mp4')
 cap.set(3, frameWidth)
 cap.set(4, frameHeight)
 img_counter = 0
@@ -18,11 +18,11 @@ cv2.namedWindow("Parameters")
 cv2.resizeWindow("Parameters",640,240)
 cv2.createTrackbar("Threshold1","Parameters",23,255,empty)
 cv2.createTrackbar("Threshold2","Parameters",20,255,empty)
-cv2.createTrackbar("LowerArea","Parameters",160000,300000,empty)
+cv2.createTrackbar("LowerArea","Parameters",80000,300000,empty)
 cv2.createTrackbar("UpperArea","Parameters",280000,300000,empty)
 
 cv2.createTrackbar("LowerX","Parameters",0,250,empty)
-cv2.createTrackbar("UpperX","Parameters",90,250,empty)
+cv2.createTrackbar("UpperX","Parameters",100,250,empty)
 cv2.createTrackbar("LowerY","Parameters",0,250,empty)
 cv2.createTrackbar("UpperY","Parameters",30,250,empty)
 
@@ -80,7 +80,7 @@ def getContours(img,imgContour,img_counter,start,end):
                 print("y ", y)
             cv2.rectangle(imgContour, (x , y ), (x + w , y + h ), (0, 255, 0), 5)
 
-            cv2.putText(imgContour, "Points: " + str(len(approx)), (x + w + 20, y + 20), cv2.FONT_HERSHEY_COMPLEX, .7,
+            cv2.putText(imgContour, "Coordinates: (" + str(x) + ", " + str(y) + ")", (x + 20, y+40), cv2.FONT_HERSHEY_COMPLEX, .7, #str(len(approx)), (x, y), cv2.FONT_HERSHEY_COMPLEX, .7,
                         (0, 255, 0), 2)
             cv2.putText(imgContour, "Area: " + str(int(area)), (x + w + 20, y + 45), cv2.FONT_HERSHEY_COMPLEX, 0.7,
                         (0, 255, 0), 2)
