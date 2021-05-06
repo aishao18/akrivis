@@ -132,7 +132,9 @@ def getContours(img,imgContour,img_counter,start,end):
 
                 ratio = round((licorice/total_pixel_num)*10000,2)
 
-                the_ratio_str = "The black pixel ratio: " + str(round((licorice/total_pixel_num)*10000,2)) + "%"
+
+                # Changed 10000 to 100
+                the_ratio_str = "The black pixel ratio: " + str(round((licorice/total_pixel_num)*100,2)) + "%"
                 cv2.putText(imgContour, the_ratio_str, (520, 440), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
                 # print(the_ratio_str)
 
