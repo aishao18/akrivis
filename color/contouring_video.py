@@ -16,8 +16,12 @@ cv2.namedWindow("Parameters")
 cv2.resizeWindow("Parameters",640,240)
 cv2.createTrackbar("Threshold1","Parameters",23,255,empty)
 cv2.createTrackbar("Threshold2","Parameters",20,255,empty)
-cv2.createTrackbar("LowerArea","Parameters",80000,300000,empty)
-cv2.createTrackbar("UpperArea","Parameters",160000,300000,empty)
+cv2.createTrackbar("LowerArea","Parameters",160000,300000,empty)
+cv2.createTrackbar("UpperArea","Parameters",280000,300000,empty)
+cv2.createTrackbar("LowerX","Parameters",0,250,empty)
+cv2.createTrackbar("UpperX","Parameters",90,250,empty)
+cv2.createTrackbar("LowerY","Parameters",0,250,empty)
+cv2.createTrackbar("UpperY","Parameters",30,250,empty)
 
 def stackImages(scale,imgArray):
     rows = len(imgArray)
@@ -66,8 +70,9 @@ def getContours(img,imgContour,img_counter):
 
             # x y bullid
             x , y , w, h = cv2.boundingRect(approx)
-            print("x ", x)
-            print("y ", y)
+            if len(approx) >= 4:
+                print("x ", x)
+                print("y ", y)
             cv2.rectangle(imgContour, (x , y ), (x + w , y + h ), (0, 255, 0), 5)
 
             cv2.putText(imgContour, "Points: " + str(len(approx)), (x + w + 20, y + 20), cv2.FONT_HERSHEY_COMPLEX, .7,
@@ -75,7 +80,12 @@ def getContours(img,imgContour,img_counter):
             cv2.putText(imgContour, "Area: " + str(int(area)), (x + w + 20, y + 45), cv2.FONT_HERSHEY_COMPLEX, 0.7,
                         (0, 255, 0), 2)
 
-            if len(approx) >= 4 and 136 <= x and x <= 236 and 0 <= y and y <= 38:
+            lx = cv2.getTrackbarPos("LowerX","Parameters")
+            ux = cv2.getTrackbarPos("UpperX","Parameters")
+            ly = cv2.getTrackbarPos("LowerY","Parameters")
+            uy = cv2.getTrackbarPos("UpperY","Parameters")
+
+            if len(approx) >= 4 and lx <= x and x <= ux and ly <= y and y <= uy:
                 # print('it detects')
                 _, image = cap.read()
 
