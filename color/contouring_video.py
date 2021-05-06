@@ -6,8 +6,8 @@ import time
 
 frameWidth = 640
 frameHeight = 480
-cap = cv2.VideoCapture(0)
-# cap = cv2.VideoCapture('figures/convey.mp4')
+# cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture('figures/convey.mp4')
 cap.set(3, frameWidth)
 cap.set(4, frameHeight)
 img_counter = 0
@@ -133,7 +133,7 @@ def getContours(img,imgContour,img_counter,start,end):
                 ratio = round((licorice/total_pixel_num)*10000,2)
 
                 the_ratio_str = "The black pixel ratio: " + str(round((licorice/total_pixel_num)*10000,2)) + "%"
-                cv2.putText(image, the_ratio_str, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)
+                cv2.putText(imgContour, the_ratio_str, (540, 440), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
                 # print(the_ratio_str)
 
                 # Pixel detection check
