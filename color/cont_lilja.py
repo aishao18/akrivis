@@ -59,7 +59,7 @@ def stackImages(scale,imgArray):
         ver = hor
     return ver
 
-def getContours(img,imgContour,img_counter,start,end):
+def getContours(img,imgContour,img_counter):
     contours, hierarchy = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     for cnt in contours:
         area = cv2.contourArea(cnt)
@@ -134,8 +134,7 @@ def getContours(img,imgContour,img_counter,start,end):
                 print(the_ratio_str)
 
                 # Pixel detection check
-                if ratio >= compare and (end-start) > 3:
-                    start = time.time()
+                if ratio >= compare:
                     print("Alert!!!!")
                     img_name = "opencv_frame_{}.png".format(img_counter)
                     cv2.imwrite(img_name, imgContour)
@@ -147,13 +146,10 @@ def getContours(img,imgContour,img_counter,start,end):
                 # show the images
                 cv2.imshow("images", np.hstack([image, output]))
                 # cv2.waitKey(0)
-        end = time.time()
-    return img_counter,start,end
+    return img_counter
 
 def main():
     img_counter = 0
-    start = time.time()
-    end = time.time()
     while True:
         success, img = cap.read()
         imgContour = img.copy()
@@ -164,11 +160,10 @@ def main():
         imgCanny = cv2.Canny(imgGray,threshold1,threshold2)
         kernel = np.ones((5, 5))
         imgDil = cv2.dilate(imgCanny, kernel, iterations=1)
-        img_counter,start,end = getContours(imgDil,imgContour,img_counter,start,end)
+        img_counter = getContours(imgDil,imgContour,img_counter)
         imgStack = stackImages(0.8,([img,imgCanny],
                                     [imgDil,imgContour]))
         cv2.imshow("Result", imgStack)
-        print('Time elapsed', end-start)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
