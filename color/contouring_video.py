@@ -18,10 +18,13 @@ cv2.createTrackbar("Threshold1","Parameters",23,255,empty)
 cv2.createTrackbar("Threshold2","Parameters",20,255,empty)
 cv2.createTrackbar("LowerArea","Parameters",160000,300000,empty)
 cv2.createTrackbar("UpperArea","Parameters",280000,300000,empty)
+
 cv2.createTrackbar("LowerX","Parameters",0,250,empty)
 cv2.createTrackbar("UpperX","Parameters",90,250,empty)
 cv2.createTrackbar("LowerY","Parameters",0,250,empty)
 cv2.createTrackbar("UpperY","Parameters",30,250,empty)
+
+cv2.createTrackbar("LicoriceThreshold","Parameters", 5, 1000, empty)
 
 def stackImages(scale,imgArray):
     rows = len(imgArray)
@@ -85,6 +88,8 @@ def getContours(img,imgContour,img_counter):
             ly = cv2.getTrackbarPos("LowerY","Parameters")
             uy = cv2.getTrackbarPos("UpperY","Parameters")
 
+            compare = cv2.getTrackbarPos("LicoriceThreshold","Parameters")
+
             if len(approx) >= 4 and lx <= x and x <= ux and ly <= y and y <= uy:
                 # print('it detects')
                 _, image = cap.read()
@@ -121,14 +126,14 @@ def getContours(img,imgContour,img_counter):
 
                 print("Pixel ratio: ", float(licorice/total_pixel_num))
 
+                ratio = round((licorice/total_pixel_num)*10000,2)
 
-                ##### aisha
+                the_ratio_str = "The black pixel ratio: " + str(round((licorice/total_pixel_num)*10000,2)) + "%"
+                print(the_ratio_str)
 
-
-                no_red = cv2.countNonZero(mask)
-
-                the_ratio = "The black pixel ratio: " + str(round((no_red/total_pixel_num)*100,2)) + "%"
-                print(the_ratio)
+                # Pixel detection check
+                if ratio >= compare:
+                    print("AAAAAAAAAAAAAAA")
 
                 # show the images
                 cv2.imshow("images", np.hstack([image, output]))
