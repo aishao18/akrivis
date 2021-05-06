@@ -1,3 +1,5 @@
+#!/usr/bin/env python2
+
 import cv2
 import numpy as np
 import time
@@ -75,15 +77,15 @@ def getContours(img,imgContour,img_counter,start,end):
 
             # x y bullid
             x , y , w, h = cv2.boundingRect(approx)
-            if len(approx) >= 4:
-                print("x ", x)
-                print("y ", y)
+            # if len(approx) >= 4:
+            #     print("x ", x)
+            #     print("y ", y)
             cv2.rectangle(imgContour, (x , y ), (x + w , y + h ), (0, 255, 0), 5)
 
             cv2.putText(imgContour, "Coordinates: (" + str(x) + ", " + str(y) + ")", (x + 20, y+40), cv2.FONT_HERSHEY_COMPLEX, .7, #str(len(approx)), (x, y), cv2.FONT_HERSHEY_COMPLEX, .7,
-                        (0, 255, 0), 2)
+                        (0, 0, 0), 2)
             cv2.putText(imgContour, "Area: " + str(int(area)), (x + w + 20, y + 45), cv2.FONT_HERSHEY_COMPLEX, 0.7,
-                        (0, 255, 0), 2)
+                        (0, 0, 0), 2)
 
             lx = cv2.getTrackbarPos("LowerX","Parameters")
             ux = cv2.getTrackbarPos("UpperX","Parameters")
@@ -126,12 +128,13 @@ def getContours(img,imgContour,img_counter,start,end):
                 total_pixel_num = float(cv2.countNonZero(all_pixels))
                 licorice = float(cv2.countNonZero(mask))
 
-                print("Pixel ratio: ", float(licorice/total_pixel_num))
+                # print("Pixel ratio: ", float(licorice/total_pixel_num))
 
                 ratio = round((licorice/total_pixel_num)*10000,2)
 
                 the_ratio_str = "The black pixel ratio: " + str(round((licorice/total_pixel_num)*10000,2)) + "%"
-                print(the_ratio_str)
+                cv2.putText(image, the_ratio_str, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)
+                # print(the_ratio_str)
 
                 # Pixel detection check
                 if ratio >= compare and (end-start) > 3:
@@ -139,8 +142,8 @@ def getContours(img,imgContour,img_counter,start,end):
                     print("Alert!!!!")
                     img_name = "opencv_frame_{}.png".format(img_counter)
                     cv2.imwrite(img_name, imgContour)
-                    print("{} written!".format(img_name))
-                    print(img_counter)
+                    # print("{} written!".format(img_name))
+                    # print(img_counter)
                     img_counter = img_counter + 1
                     # time.sleep(1) DOESNT WORK, VIDEO LAG
 
@@ -168,7 +171,7 @@ def main():
         imgStack = stackImages(0.8,([img,imgCanny],
                                     [imgDil,imgContour]))
         cv2.imshow("Result", imgStack)
-        print('Time elapsed', end-start)
+        # print('Time elapsed', end-start)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
