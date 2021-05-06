@@ -56,6 +56,11 @@ for (lower, upper) in boundaries:
 	mask = cv2.inRange(image, lower, upper)
 	output = cv2.bitwise_and(image, image, mask = mask)
 	# show the images
+
+	the_ratio = "The black pixel ratio: " + str(round((no_red/total_pixel_num)*100,2)) + "%"
+
+	cv2.putText(image, the_ratio, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)
+	cv2.imshow("Original",image)
 	cv2.imshow("images", np.hstack([image, output]))
 	#print('The hstack:')
 	#print(np.hstack([image, output]))

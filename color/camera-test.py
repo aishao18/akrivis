@@ -12,7 +12,8 @@ import time
 
 ###################################################################################################
 def main():
-    capWebcam = cv2.VideoCapture(0)  # declare a VideoCapture object and associate to webcam, 0 => use 1st webcam
+    # capWebcam = cv2.VideoCapture(0)  # declare a VideoCapture object and associate to webcam, 0 => use 1st webcam
+    capWebcam = cv2.VideoCapture('figures/convey.mp4')
 
     # show original resolution
     print("default resolution = " + str(capWebcam.get(cv2.CAP_PROP_FRAME_WIDTH)) + "x" + str(
