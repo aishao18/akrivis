@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import time
 
 frameWidth = 640
 frameHeight = 480
@@ -7,6 +8,7 @@ frameHeight = 480
 cap = cv2.VideoCapture('figures/convey.mp4')
 cap.set(3, frameWidth)
 cap.set(4, frameHeight)
+img_counter = 0
 
 
 def empty(a):
@@ -133,26 +135,36 @@ def getContours(img,imgContour,img_counter):
 
                 # Pixel detection check
                 if ratio >= compare:
-                    print("AAAAAAAAAAAAAAA")
+                    print("Alert!!!!")
+                    img_name = "opencv_frame_{}.png".format(img_counter)
+                    cv2.imwrite(img_name, imgContour)
+                    print("{} written!".format(img_name))
+                    print(img_counter)
+                    img_counter = img_counter + 1
+                    # time.sleep(1) DOESNT WORK, VIDEO LAG
 
                 # show the images
                 cv2.imshow("images", np.hstack([image, output]))
                 # cv2.waitKey(0)
+    return img_counter
 
-img_counter = 0
-while True:
-    success, img = cap.read()
-    imgContour = img.copy()
-    imgBlur = cv2.GaussianBlur(img, (7, 7), 1)
-    imgGray = cv2.cvtColor(imgBlur, cv2.COLOR_BGR2GRAY)
-    threshold1 = cv2.getTrackbarPos("Threshold1", "Parameters")
-    threshold2 = cv2.getTrackbarPos("Threshold2", "Parameters")
-    imgCanny = cv2.Canny(imgGray,threshold1,threshold2)
-    kernel = np.ones((5, 5))
-    imgDil = cv2.dilate(imgCanny, kernel, iterations=1)
-    getContours(imgDil,imgContour,img_counter)
-    imgStack = stackImages(0.8,([img,imgCanny],
-                                [imgDil,imgContour]))
-    cv2.imshow("Result", imgStack)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+def main():
+    img_counter = 0
+    while True:
+        success, img = cap.read()
+        imgContour = img.copy()
+        imgBlur = cv2.GaussianBlur(img, (7, 7), 1)
+        imgGray = cv2.cvtColor(imgBlur, cv2.COLOR_BGR2GRAY)
+        threshold1 = cv2.getTrackbarPos("Threshold1", "Parameters")
+        threshold2 = cv2.getTrackbarPos("Threshold2", "Parameters")
+        imgCanny = cv2.Canny(imgGray,threshold1,threshold2)
+        kernel = np.ones((5, 5))
+        imgDil = cv2.dilate(imgCanny, kernel, iterations=1)
+        img_counter = getContours(imgDil,imgContour,img_counter)
+        imgStack = stackImages(0.8,([img,imgCanny],
+                                    [imgDil,imgContour]))
+        cv2.imshow("Result", imgStack)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+main()
